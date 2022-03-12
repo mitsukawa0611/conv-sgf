@@ -11,7 +11,7 @@ const COLOR_MAPPING = {
 const GAME_MAPPING = {
 	EV: '大会名',
 	PC: '対局場所',
-	SZ: '路盤サイズ',
+	SZ: '碁盤サイズ',
 	DT: '対局日',
 	PB: '黒',
 	PW: '白',
@@ -121,7 +121,7 @@ function sgf2text() {
 	let moves = nodes.slice(2, nodes.length);
 	let cnt = 1;
 	for (let i = 0; i < moves.length; i++) {
-		result.push(`${cnt}手目: ${get_move_text(moves[i])}`);
+		result.push(get_move_text(cnt, moves[i]));
 		cnt++;
 	}
 
@@ -162,7 +162,7 @@ function get_game_info(game_info, label) {
 	return `${color}${plus}勝ち`;
 }
 
-function get_move_text(m) {
+function get_move_text(cnt, m) {
 	// ノードから着手テキストを取得
 
 	// 石情報取得
@@ -171,14 +171,14 @@ function get_move_text(m) {
 	// 座標取得
 	// パスを判定
 	if (m.slice(2, 4) == PASS_FROM_WORD) {
-		return `${c}${PASS_TO_WORD}`;
+		return `${c}${cnt}手目: ${PASS_TO_WORD}`;
 	}
 
 	// 座標取得
 	let x = X_MAPPING[m[2]];
 	let y = Y_MAPPING[m[3]];
 
-	return `${c}${x}の${y}`;
+	return `${c}${cnt}手目: ${x}の${y}`;
 }
 
 function undefined_check(targets) {
