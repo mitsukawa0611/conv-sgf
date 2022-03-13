@@ -88,6 +88,9 @@ function text2sgf() {
 		return null;
 	}
 
+	// 入力テキスト加工
+	target_text = trim_text(target_text);
+
 	// 入力テキストを1手ごとに分割
 	let moves = target_text.split(/\r\n|\n/);
 
@@ -102,6 +105,11 @@ function text2sgf() {
 	}
 
 	for (let i = 0; i < moves.length; i++) {
+		// 空行はスキップ
+		if (moves[i].length == 0) {
+			continue;
+		}
+
 		result.push(get_move_text(cnt, moves[i]));
 		cnt++;
 	}
@@ -160,6 +168,18 @@ function get_info(target_id) {
 	}
 }
 
+function trim_text(t) {
+	// 半角に変換
+	t = t.replace(/[０-９，]/g, function(s) {
+		return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+	});
+
+	// 空白削除
+	t = t.replace(/ +/g, "");
+
+	return t;
+}
+
 function get_move_text(cnt, m) {
 	// 着手テキストを取得
 
@@ -178,7 +198,7 @@ function get_move_text(cnt, m) {
 
 	// 座標取得
 	let p = m.split(DATA_DELIMITER);
-	if (p.length > 2) {
+	if (p.length != 2) {
 		throw new Error(`${INVALID_ERROR_MSG}(${p})`);
 	}
 	let x = MOVE_MAPPING[p[0]];
@@ -199,12 +219,4 @@ function undefined_check(targets) {
 function copy_result() {
 	let result_area = document.getElementById('result');
 	navigator.clipboard.writeText(result_area.value);
-}
-
-function reset() {
-	// テキストクリア
-	document.getElementById('main_text').value = ''
-	// 変換結果クリア
-	let result_area = document.getElementById('result');
-	result_area.value = ''
 }
