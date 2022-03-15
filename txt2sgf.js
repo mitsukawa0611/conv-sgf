@@ -95,15 +95,8 @@ function text2sgf() {
 	let moves = target_text.split(/\r\n|\n/);
 
 	// 初手取得
-	let fc = document.getElementsByName('first-color');
-	let cnt = 0;
-	for (let i = 0; i < fc.length; i++) {
-		if (fc[i].checked) {
-			cnt = i;
-			break;
-		}
-	}
-
+	let fc = document.getElementById('first-color');
+	let cnt = fc.selectedIndex;
 	for (let i = 0; i < moves.length; i++) {
 		// 空行はスキップ
 		if (moves[i].length == 0) {
@@ -125,26 +118,15 @@ function text2sgf() {
 function get_size() {
 	// 碁盤サイズ情報取得
 	let sz = document.getElementById('size');
-	let num = sz.selectedIndex;
-
-	// 数値からvalueを取得
-	let result_size = sz.options[num].value;
-
-	return `${SIZE_TO_WORD}[${result_size}]`;
+	return `${SIZE_TO_WORD}[${sz.value}]`;
 }
 
 function get_result() {
 	// 対局結果取得
 
 	// 勝利色判定
-	let wc = document.getElementsByName('win-color');
-	let win_color = '';
-	for (let i = 0; i < wc.length; i++) {
-		if (wc[i].checked) {
-			win_color = COLOR_MAPPING[wc[i].value];
-			break;
-		}
-	}
+	let wc = document.getElementById('win-color');
+	let win_color = COLOR_MAPPING[wc.value];
 
 	// 中押し勝ちをチェック
 	let chk = document.getElementById('中押し');
