@@ -112,7 +112,7 @@ function text2sgf() {
 
 	// 結果をページに表示
 	let result_area = document.getElementById('result');
-	result_area.value = `(;${result.join(';')})`;
+	result_area.value = `(;GM[1]${result.join(';')})`;
 }
 
 function get_size() {
