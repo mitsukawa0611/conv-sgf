@@ -164,14 +164,23 @@ function get_move_text(cnt, m) {
 	let c = COLOR_MAPPING[m[0]];
 
 	// 座標取得
+	let pattern = /(?<=\[)[a-z]*(?=\])/;
+	let res = m.match(pattern);
+	if (res == null) {
+		return '';
+	}
+
+	// ヒットした文字列取得
+	let info_text = res[0];
+
 	// パスを判定
-	if (m.slice(2, 4) == PASS_FROM_WORD) {
+	if (info_text == '' || info_text == PASS_FROM_WORD) {
 		return `${c}${cnt}手目: ${PASS_TO_WORD}`;
 	}
 
 	// 座標取得
-	let x = X_MAPPING[m[2]];
-	let y = Y_MAPPING[m[3]];
+	let x = X_MAPPING[info_text[0]];
+	let y = Y_MAPPING[info_text[1]];
 
 	return `${c}${cnt}手目: ${x}の${y}`;
 }
