@@ -71,12 +71,7 @@ function main() {
 		sgf2text();
 	}
 	catch (e) {
-		if (e.stack) {
-			alert(e.stack);
-		} else {
-			// stackがない場合には、そのままエラー情報を出す。
-			alert(e.message);
-		}
+		alert(e);
 	}
 }
 
@@ -97,7 +92,7 @@ function sgf2text() {
 	}
 
 	// 対局情報
-	let game_info = nodes[1];
+	let game_info = nodes[1].trim();
 	let info_text = ''
 	for (let k in GAME_MAPPING) {
 		info_text = get_game_info(game_info, k);
@@ -116,7 +111,7 @@ function sgf2text() {
 	let moves = nodes.slice(2, nodes.length);
 	let cnt = 1;
 	for (let i = 0; i < moves.length; i++) {
-		result.push(get_move_text(cnt, moves[i]));
+		result.push(get_move_text(cnt, moves[i].trim()));
 		cnt++;
 	}
 
@@ -133,7 +128,7 @@ function get_game_info(game_info, label) {
 	let pattern = `(?<=${label}\\[)([^\\]]+)`;
 	let regexp = new RegExp(pattern);
 	let res = game_info.match(regexp);
-	if (res == null) {
+	if (res == '' || res == null) {
 		return '';
 	}
 
